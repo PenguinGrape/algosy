@@ -1,0 +1,4 @@
+/snap/clion/103/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/grape/CLionProjects/algosy
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/grape/CLionProjects/algosy/cmake-build-debug
