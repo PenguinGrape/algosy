@@ -99,6 +99,7 @@ int main(int argc, char *argv[]) {
         if (fpw == nullptr){
             return 2;
         }
+        fprintf(fpw, "%i\n", count);
         for (int i = 0; i < count; i++){
             fprintf(fpw, "%s\n", result[i].string);
         }
