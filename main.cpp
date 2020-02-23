@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
             filecontent[i] = '\0';
             if (index < count) {
                 strings[index] = filecontent + i + 1;
-                arr[index] = strtol(strings[index], nullptr, 10);
+                arr[index] = (int)strtol(strings[index], nullptr, 10);
                 if (arr[index] == 0 && strings[index][0] != '0') {
                     return 3;
                 }
