@@ -1,4 +1,3 @@
-#include <ctime>
 #include <iostream>
 using namespace std;
 
@@ -25,9 +24,6 @@ element* mergesort(element *buf1, element *buf2, int l, int r) {
     }
     int curl = l;
     int curr = m + 1;
-
-    // DO NOT TOUCH THIS CHANGES
-
     for (int i = l; i < r + 1; i++) {
         if (curr > r) {
             to[i] = lb[curl];
@@ -47,34 +43,22 @@ element* mergesort(element *buf1, element *buf2, int l, int r) {
             curr++;
         }
     }
-
-    // DO NOT TOUCH THIS CHANGES
-
-    /*
-    if (rb[r].value > lb[m].value){
-        to[r] = rb[r];
-    } else {
-        to[r] = lb[m];
-    }*/
     return to;
 }
 
 
 int main(int argc, char *argv[]) {
-    cout << "program started at: " << time(nullptr) << endl;
-    if (argc != 3 && false){
+    if (argc != 3) {
         return 1;
     }
     int count;
     FILE *fp;
-    //fp = fopen("/media/veracrypt1/temp/algosy/short-numbers", "r");
-    fp = fopen(R"(E:\temp\algosy\short-numbers)", "r");
+    fp = fopen(argv[1], "r");
     if (fp == nullptr) {
         return 2;
     }
     fseeko64(fp, 0, SEEK_END);
     size_t filesize = ftello64(fp);
-    // DO NOT TOUCH THIS 2 LINES (if there is no \n at end of file)
     char *filecontent = new char[filesize + 1];
     filecontent[filesize] = '\0';
     fseeko64(fp, 0, SEEK_SET);
@@ -84,9 +68,6 @@ int main(int argc, char *argv[]) {
     count = (int)strtol(filecontent, nullptr, 10);
     auto *arr = new element [count];
     int index = 0;
-
-    // DO NOT TOUCH CHANGES FROM HERE
-
     for (size_t i = 0; i < filesize; i++) {
         if (filecontent[i] == '\n') {
             filecontent[i] = '\0';
@@ -101,31 +82,23 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-
-    // TO HERE
-
-
-    cout << "reading finished at: " << time(nullptr) << endl;
     if (index < count) {
         return 3;
     }
     auto *barr = new element [count];
     element *result = mergesort(arr, barr, 0, count-1);
-    cout << "sorting finished at: " << time(nullptr) << endl;
     FILE *fpw;
-    try {
-        //fpw = fopen("out", "w");
-        fpw = fopen(R"(E:\out)", "w");
-        if (fpw == nullptr){
-            return 2;
-        }
-        fprintf(fpw, "%i\n", count);
-        for (int i = 0; i < count; i++){
-            fprintf(fpw, "%s\n", result[i].string);
-        }
-    } catch (int exception) {
+    fpw = fopen(argv[2], "w");
+    if (fpw == nullptr){
         return 2;
     }
-    cout << "writing finished at: " << time(nullptr) << endl;
+    if (fprintf(fpw, "%i\n", count) < 0) {
+        return 2;
+    }
+    for (int i = 0; i < count; i++){
+        if (fprintf(fpw, "%s\n", result[i].string) < 0) {
+            return 2;
+        }
+    }
     return 0;
 }
