@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/grape/CLionProjects/algosy/main.cpp" "/home/grape/CLionProjects/algosy/cmake-build-debug/CMakeFiles/algosy.dir/main.cpp.o"
+  "C:/Users/Penguin Grape/CLionProjects/algosy/main.cpp" "C:/Users/Penguin Grape/CLionProjects/algosy/cmake-build-debug/CMakeFiles/algosy.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

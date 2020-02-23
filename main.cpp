@@ -25,7 +25,10 @@ element* mergesort(element *buf1, element *buf2, int l, int r) {
     }
     int curl = l;
     int curr = m + 1;
-    for (int i = l; i < r; i++) {
+
+    // DO NOT TOUCH THIS CHANGES
+
+    for (int i = l; i < r + 1; i++) {
         if (curr > r) {
             to[i] = lb[curl];
             curl++;
@@ -44,11 +47,15 @@ element* mergesort(element *buf1, element *buf2, int l, int r) {
             curr++;
         }
     }
+
+    // DO NOT TOUCH THIS CHANGES
+
+    /*
     if (rb[r].value > lb[m].value){
         to[r] = rb[r];
     } else {
         to[r] = lb[m];
-    }
+    }*/
     return to;
 }
 
@@ -60,13 +67,16 @@ int main(int argc, char *argv[]) {
     }
     int count;
     FILE *fp;
-    fp = fopen("/media/veracrypt1/temp/algosy/short-numbers", "r");
+    //fp = fopen("/media/veracrypt1/temp/algosy/short-numbers", "r");
+    fp = fopen(R"(E:\temp\algosy\short-numbers)", "r");
     if (fp == nullptr) {
         return 2;
     }
     fseeko64(fp, 0, SEEK_END);
     size_t filesize = ftello64(fp);
-    char *filecontent = new char[filesize];
+    // DO NOT TOUCH THIS 2 LINES (if there is no \n at end of file)
+    char *filecontent = new char[filesize + 1];
+    filecontent[filesize] = '\0';
     fseeko64(fp, 0, SEEK_SET);
     if (fread(filecontent, filesize, 1, fp) != 1) {
         return 2;
@@ -74,18 +84,27 @@ int main(int argc, char *argv[]) {
     count = (int)strtol(filecontent, nullptr, 10);
     auto *arr = new element [count];
     int index = 0;
+
+    // DO NOT TOUCH CHANGES FROM HERE
+
     for (size_t i = 0; i < filesize; i++) {
-        if (filecontent[i] == '\n' && index < count) {
+        if (filecontent[i] == '\n') {
             filecontent[i] = '\0';
-            arr[index].string = filecontent + i +1;
-            arr[index].value = strtol(arr[index].string, nullptr, 10);
-            if (arr[index].value == 0 && arr[index].string[0] != '0') {
-                cout << arr[index].string << endl;
-                return 3;
+            if (index < count) {
+                arr[index].string = filecontent + i + 1;
+                arr[index].value = strtol(arr[index].string, nullptr, 10);
+                if (arr[index].value == 0 && arr[index].string[0] != '0') {
+                    cout << arr[index].string << endl;
+                    return 3;
+                }
+                index++;
             }
-            index++;
         }
     }
+
+    // TO HERE
+
+
     cout << "reading finished at: " << time(nullptr) << endl;
     if (index < count) {
         return 3;
@@ -95,7 +114,8 @@ int main(int argc, char *argv[]) {
     cout << "sorting finished at: " << time(nullptr) << endl;
     FILE *fpw;
     try {
-        fpw = fopen("out", "w");
+        //fpw = fopen("out", "w");
+        fpw = fopen(R"(E:\out)", "w");
         if (fpw == nullptr){
             return 2;
         }
