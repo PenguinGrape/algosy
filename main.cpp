@@ -1,53 +1,14 @@
+#include <ctime>
 #include <iostream>
 using namespace std;
 
-
-struct element {
-    long value;
-    char* string;
-};
-
-
-element* mergesort(element *buf1, element *buf2, int l, int r) {
-    if (l == r){
-        buf2[l] = buf1[l];
-        return buf2;
-    }
-    int m = (r + l) / 2;
-    element *lb = mergesort(buf1, buf2, l, m);
-    element *rb = mergesort(buf1, buf2, m + 1, r);
-    element *to;
-    if (lb == buf2) {
-        to = buf1;
-    } else {
-        to = buf2;
-    }
-    int curl = l;
-    int curr = m + 1;
-    for (int i = l; i < r + 1; i++) {
-        if (curr > r) {
-            to[i] = lb[curl];
-            curl++;
-            continue;
-        }
-        if (curl > m) {
-            to[i] = rb[curr];
-            curr++;
-            continue;
-        }
-        if (lb[curl].value < rb[curr].value) {
-            to[i] = lb[curl];
-            curl++;
-        } else {
-            to[i] = rb[curr];
-            curr++;
-        }
-    }
-    return to;
-}
+int* arr;
+char** strings;
+void quicksort(int start, int end);
 
 
 int main(int argc, char *argv[]) {
+    cout << "program started at  " << time(nullptr) << endl;
     if (argc != 3) {
         return 1;
     }
@@ -66,16 +27,16 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     count = (int)strtol(filecontent, nullptr, 10);
-    auto *arr = new element [count];
+    arr = new int [count];
+    strings = new char* [count];
     int index = 0;
     for (size_t i = 0; i < filesize; i++) {
         if (filecontent[i] == '\n') {
             filecontent[i] = '\0';
             if (index < count) {
-                arr[index].string = filecontent + i + 1;
-                arr[index].value = strtol(arr[index].string, nullptr, 10);
-                if (arr[index].value == 0 && arr[index].string[0] != '0') {
-                    cout << arr[index].string << endl;
+                strings[index] = filecontent + i + 1;
+                arr[index] = strtol(strings[index], nullptr, 10);
+                if (arr[index] == 0 && strings[index][0] != '0') {
                     return 3;
                 }
                 index++;
@@ -85,8 +46,9 @@ int main(int argc, char *argv[]) {
     if (index < count) {
         return 3;
     }
-    auto *barr = new element [count];
-    element *result = mergesort(arr, barr, 0, count-1);
+    cout << "reading finished at " << time(nullptr) << endl;
+    quicksort(0, count);
+    cout << "sorting finished at " << time(nullptr) << endl;
     FILE *fpw;
     fpw = fopen(argv[2], "w");
     if (fpw == nullptr){
@@ -96,9 +58,41 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     for (int i = 0; i < count; i++){
-        if (fprintf(fpw, "%s\n", result[i].string) < 0) {
+        if (fprintf(fpw, "%s\n", strings[i]) < 0) {
             return 2;
         }
     }
+    cout << "writing finished at " << time(nullptr) << endl;
     return 0;
+}
+
+
+void quicksort(int start, int end) {
+    int l = start;
+    int r = end;
+    int pivot = arr[(l + r) / 2];
+    while (l <= r){
+        while (arr[l] < pivot) {
+            l-=-1;
+        }
+        while (arr[r] > pivot) {
+            r+=-1;
+        }
+        if (l <= r){
+            int tmp = arr[l];
+            char *stmp = strings[l];
+            arr[l] = arr[r];
+            strings[l] = strings[r];
+            arr[r] = tmp;
+            strings[r] = stmp;
+            l-=-1;
+            r+=-1;
+        }
+    }
+    if (r > start){
+        quicksort(start, r);
+    }
+    if (l < end){
+        quicksort(l, end);
+    }
 }
