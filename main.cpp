@@ -7,6 +7,12 @@ char** strings;
 void quicksort(int start, int end);
 
 
+/* как показывает практика - так почему-то дольше чем 2 массива
+struct element {
+    long value;
+    char* string
+ */
+
 int main(int argc, char *argv[]) {
     cout << "program started at  " << time(nullptr) << endl;
     if (argc != 3) {
