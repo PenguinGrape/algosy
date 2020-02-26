@@ -1,4 +1,3 @@
-#include <ctime>
 #include <iostream>
 using namespace std;
 
@@ -14,7 +13,6 @@ struct element {
  */
 
 int main(int argc, char *argv[]) {
-    cout << "program started at  " << time(nullptr) << endl;
     if (argc != 3) {
         return 1;
     }
@@ -52,9 +50,7 @@ int main(int argc, char *argv[]) {
     if (index < count) {
         return 3;
     }
-    cout << "reading finished at " << time(nullptr) << endl;
     quicksort(0, count);
-    cout << "sorting finished at " << time(nullptr) << endl;
     FILE *fpw;
     fpw = fopen(argv[2], "w");
     if (fpw == nullptr){
@@ -68,7 +64,6 @@ int main(int argc, char *argv[]) {
             return 2;
         }
     }
-    cout << "writing finished at " << time(nullptr) << endl;
     return 0;
 }
 
