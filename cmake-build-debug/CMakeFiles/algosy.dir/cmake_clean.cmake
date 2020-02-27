@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/algosy.dir/main.cpp.obj"
-  "algosy.exe"
-  "algosy.exe.manifest"
+  "CMakeFiles/algosy.dir/main.cpp.o"
+  "algosy"
   "algosy.pdb"
-  "libalgosy.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

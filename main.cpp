@@ -1,16 +1,16 @@
 #include <iostream>
 using namespace std;
 
-int* arr;
-char** strings;
-void quicksort(int start, int end);
 
-
-/* как показывает практика - так почему-то дольше чем 2 массива
 struct element {
     long value;
-    char* string
- */
+    char* string;
+};
+
+
+void heapify(element* arr, int count, int root);
+void heapsort(element* arr, int count);
+
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     }
     int count;
     FILE *fp;
-    fp = fopen(argv[1], "r");
+    fp = fopen("/media/veracrypt1/temp/algosy/shortest", "r");
     if (fp == nullptr) {
         return 2;
     }
@@ -31,16 +31,15 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     count = (int)strtol(filecontent, nullptr, 10);
-    arr = new int [count];
-    strings = new char* [count];
+    auto *arr = new element [count];
     int index = 0;
     for (size_t i = 0; i < filesize; i++) {
         if (filecontent[i] == '\n') {
             filecontent[i] = '\0';
             if (index < count) {
-                strings[index] = filecontent + i + 1;
-                arr[index] = (int)strtol(strings[index], nullptr, 10);
-                if (arr[index] == 0 && strings[index][0] != '0') {
+                arr[index].string = filecontent + i + 1;
+                arr[index].value = strtol(arr[index].string, nullptr, 10);
+                if (arr[index].value == 0 && arr[index].string[0] != '0') {
                     return 3;
                 }
                 index++;
@@ -50,9 +49,12 @@ int main(int argc, char *argv[]) {
     if (index < count) {
         return 3;
     }
-    quicksort(0, count);
+    heapify(arr, count, 0);
+
+    // sort here
+    heapsort(arr, count);
     FILE *fpw;
-    fpw = fopen(argv[2], "w");
+    fpw = fopen("/media/veracrypt1/temp/algosy/out-h", "w");
     if (fpw == nullptr){
         return 2;
     }
@@ -60,7 +62,7 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     for (int i = 0; i < count; i++){
-        if (fprintf(fpw, "%s\n", strings[i]) < 0) {
+        if (fprintf(fpw, "%s\n", arr[i].string) < 0) {
             return 2;
         }
     }
@@ -68,32 +70,31 @@ int main(int argc, char *argv[]) {
 }
 
 
-void quicksort(int start, int end) {
-    int l = start;
-    int r = end;
-    int pivot = arr[(l + r) / 2];
-    while (l <= r){
-        while (arr[l] < pivot) {
-            l-=-1;
-        }
-        while (arr[r] > pivot) {
-            r+=-1;
-        }
-        if (l <= r){
-            int tmp = arr[l];
-            char *stmp = strings[l];
-            arr[l] = arr[r];
-            strings[l] = strings[r];
-            arr[r] = tmp;
-            strings[r] = stmp;
-            l-=-1;
-            r+=-1;
-        }
+void heapify(element* arr, int count, int root){
+    int max = root;
+    int l = 2*root + 1;
+    int r = 2*root + 2;
+    if (l < count && arr[l].value > arr[max].value) {
+        max = l;
     }
-    if (r > start){
-        quicksort(start, r);
+    if (r < root && arr[r].value > arr[max].value) {
+        max = r;
     }
-    if (l < end){
-        quicksort(l, end);
+    if (max != root){
+        swap(arr[root], arr[max]);
+        heapify(arr, count, root);
+    }
+}
+
+
+void heapsort(element* arr, int count)
+{
+    for (int i = count / 2 - 1; i >= 0; i--) {
+        heapify(arr, count, i);
+    }
+    for (int i=count-1; i>=0; i--)
+    {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
     }
 }
