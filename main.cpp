@@ -12,8 +12,8 @@ bool check_string(const char* inp);
 /* как показывает практика - так почему-то дольше чем 2 массива
 struct element {
     long value;
-    char* string
- */
+    char* string;
+};*/
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -21,8 +21,7 @@ int main(int argc, char *argv[]) {
     }
     int count;
     FILE *fp;
-    //fp = fopen(argv[1], "r");
-    fp = fopen(R"(E:\temp\algosy\shortest.txt)", "r");
+    fp = fopen(argv[1], "r");
     if (fp == nullptr) {
         return 2;
     }
@@ -66,8 +65,7 @@ int main(int argc, char *argv[]) {
     }
     quicksort(0, count - 1);
     FILE *fpw;
-    //fpw = fopen(argv[2], "w");
-    fpw = fopen("out.txt", "w");
+    fpw = fopen(argv[2], "w");
     if (fpw == nullptr){
         return 2;
     }
