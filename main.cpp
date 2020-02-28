@@ -1,10 +1,12 @@
-#include <ctime>
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
+
 
 int* arr;
 char** strings;
 void quicksort(int start, int end);
+bool check_string(const char* inp);
 
 
 /* как показывает практика - так почему-то дольше чем 2 массива
@@ -14,25 +16,32 @@ struct element {
  */
 
 int main(int argc, char *argv[]) {
-    cout << "program started at  " << time(nullptr) << endl;
     if (argc != 3) {
         return 1;
     }
     int count;
     FILE *fp;
-    fp = fopen(argv[1], "r");
+    //fp = fopen(argv[1], "r");
+    fp = fopen(R"(E:\temp\algosy\shortest.txt)", "r");
     if (fp == nullptr) {
         return 2;
     }
-    fseeko64(fp, 0, SEEK_END);
-    size_t filesize = ftello64(fp);
+    _fseeki64(fp, 0, SEEK_END);
+    size_t filesize = _ftelli64(fp);
     char *filecontent = new char[filesize + 1];
     filecontent[filesize] = '\0';
-    fseeko64(fp, 0, SEEK_SET);
+    _fseeki64(fp, 0, SEEK_SET);
     if (fread(filecontent, filesize, 1, fp) != 1) {
         return 2;
     }
     count = (int)strtol(filecontent, nullptr, 10);
+    if (count == 0){
+        if (filecontent[0] == '0') {
+            return 0;
+        } else {
+            return 3;
+        }
+    }
     arr = new int [count];
     strings = new char* [count];
     int index = 0;
@@ -41,6 +50,9 @@ int main(int argc, char *argv[]) {
             filecontent[i] = '\0';
             if (index < count) {
                 strings[index] = filecontent + i + 1;
+                if (check_string(strings[index])) {
+                    return 3;
+                }
                 arr[index] = (int)strtol(strings[index], nullptr, 10);
                 if (arr[index] == 0 && strings[index][0] != '0') {
                     return 3;
@@ -52,11 +64,10 @@ int main(int argc, char *argv[]) {
     if (index < count) {
         return 3;
     }
-    cout << "reading finished at " << time(nullptr) << endl;
-    quicksort(0, count);
-    cout << "sorting finished at " << time(nullptr) << endl;
+    quicksort(0, count - 1);
     FILE *fpw;
-    fpw = fopen(argv[2], "w");
+    //fpw = fopen(argv[2], "w");
+    fpw = fopen("out.txt", "w");
     if (fpw == nullptr){
         return 2;
     }
@@ -68,7 +79,6 @@ int main(int argc, char *argv[]) {
             return 2;
         }
     }
-    cout << "writing finished at " << time(nullptr) << endl;
     return 0;
 }
 
@@ -101,4 +111,27 @@ void quicksort(int start, int end) {
     if (l < end){
         quicksort(l, end);
     }
+}
+
+
+bool check_string(const char* inp) {
+    unsigned char frst = inp[0];
+    if ((frst < '0' || frst > '9') && frst != '-') {
+        return true;
+    }
+    int i = 1;
+    if (frst == '-' && inp[1] == ' '){
+        return true;
+    }
+    while (inp[i] != '\n') {
+        if (inp[i] != ' ') {
+            if (inp[i] < 48 || inp[i] > 57) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+        i++;
+    }
+    return false;
 }
