@@ -10,6 +10,7 @@ bool check_string(const char* inp);
 
 
 /* как показывает практика - так почему-то дольше чем 2 массива
+ * полагаю из-за обращений к памяти, чтобы еще раз обратиться к памяти (arr[index].FIELD)
 struct element {
     long value;
     char* string;
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]) {
     if (fread(filecontent, filesize, 1, fp) != 1) {
         return 2;
     }
-    count = (int)strtol(filecontent, nullptr, 10);
+    count = strtol(filecontent, nullptr, 10);
     if (count == 0){
         if (filecontent[0] == '0') {
             return 0;
