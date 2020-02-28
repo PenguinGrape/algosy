@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     }
     int count;
     FILE *fp;
-    fp = fopen(argv[1], "r");
+    fp = fopen(argv[1], "rb");
     if (fp == nullptr) {
         return 2;
     }
@@ -74,6 +74,8 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     for (int i = 0; i < count; i++){
+        // не баг, а фича! если входные данные созданы под шиндой и программа запускается под шиндой, то в конце строки
+        // лишний символ возврата каретки. нахуй шиндовс!
         if (fprintf(fpw, "%s\n", strings[i]) < 0) {
             return 2;
         }
