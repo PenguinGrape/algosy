@@ -66,16 +66,14 @@ int main(int argc, char *argv[]) {
     }
     quicksort(0, count - 1);
     FILE *fpw;
-    fpw = fopen(argv[2], "w");
+    fpw = fopen(argv[2], "wb");
     if (fpw == nullptr){
         return 2;
     }
     if (fprintf(fpw, "%i\n", count) < 0) {
         return 2;
     }
-    for (int i = 0; i < count; i++){
-        // не баг, а фича! если входные данные созданы под шиндой и программа запускается под шиндой, то в конце строки
-        // лишний символ возврата каретки. нахуй шиндовс!
+    for (int i = 0; i < count; i++) {
         if (fprintf(fpw, "%s\n", strings[i]) < 0) {
             return 2;
         }
