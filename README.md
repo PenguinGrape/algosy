@@ -5,4 +5,5 @@ There is main.cpp with checks, file mapping and quick sort.
   
 heap, merge and quick (why did I duplicate it??) are files with other algorithms, but without SUPER FAST IO (file mapping) and some checks.  
   
-Also in this files there is cunning like an ass way to read input file (only 1 syscall) 
+Also in this files there is cunning like an ass way to read input file (only 1 syscall)  
+Windows sucks, btw
